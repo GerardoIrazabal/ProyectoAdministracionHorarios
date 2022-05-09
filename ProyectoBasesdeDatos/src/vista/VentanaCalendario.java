@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,6 +16,10 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JTable;
+
+import controlador.ControladorReservacion;
+import modelo.Reservacion;
 
 /**
  *
@@ -27,10 +32,11 @@ public class VentanaCalendario extends JFrame implements ActionListener {
     private javax.swing.JLabel labelTitulo, labelSeleccionar, labelFecha;
     private javax.swing.JPanel miPanelPrincipal, panelTitulo, contenedor;
     private com.toedter.calendar.JDateChooser jDateChooser1;
+    private JTable Tabla;
 
     public VentanaCalendario() {
         initComponents();
-        setTitle("Cartelera");
+        setTitle("Calendario de cursos");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize);
         setLocationRelativeTo(null);
@@ -99,6 +105,33 @@ public class VentanaCalendario extends JFrame implements ActionListener {
         miPanelPrincipal.setBounds(0, 0, 670, 350);
         panelTitulo.setBounds(0, 0, 1500, 70);
 
+        // Column Names
+        String[] columnNames = { "IDSALON", "Nombre", "FechaHora", "Duracion" };
+ 
+        // Initializing the JTable
+         //String[][] data = {
+            //{ "Kundan Kumar Jha", "4031", "CSE", "Hola Reservacion" },
+            //{ "Anand Jha", "6014", "IT", "Gerardo Reservacion" }
+        //};
+
+        ArrayList<Reservacion> Lista = new ControladorReservacion().ObtenerReservaciones();
+
+        String[][] data = new String [Lista.size()][4];
+
+        for (int i = 0; i < Lista.size(); i++)
+        
+        {
+            Reservacion s1 = Lista.get(i);
+            data[i][0] = s1.getIDSalon();
+            data[i][1] = s1.getNombre();
+            data[i][2] = s1.getFechaHora().toString();
+            data[i][3] = s1.getDuracion()+"";
+        }
+
+        Tabla = new JTable(data, columnNames);
+        Tabla.setBounds(30, 40, 200, 300);
+
+        miPanelPrincipal.add(Tabla);
         miPanelPrincipal.add(panelTitulo);
         getContentPane().add(miPanelPrincipal);
         pack();

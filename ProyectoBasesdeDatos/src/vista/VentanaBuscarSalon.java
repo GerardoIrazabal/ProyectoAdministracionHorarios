@@ -134,7 +134,10 @@ public class VentanaBuscarSalon {
                 if (jRadioButton1.isSelected()) {
                     CriterioDeBusqueda = "IDSALON";
                     listadeBusqueda.add(Control.BuscarSalonID(t1.getText()));
-                    JOptionPane.showMessageDialog(f, listadeBusqueda.get(0));
+                    VentanaSalones ventana = new VentanaSalones(listadeBusqueda);
+                    ventana.setVisible();
+                    // ventana.f();
+                    f.dispose();
 
                 } else if (jRadioButton2.isSelected()) {
                     CriterioDeBusqueda = "CAPACIDAD";

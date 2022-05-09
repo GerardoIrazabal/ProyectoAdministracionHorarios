@@ -39,8 +39,34 @@ public class ControladorConexion {
         return this.Sentencia.executeQuery(consulta);
     }
     
-    // insert into Cursos values (?,?,?,?,?) 
+    // Metodos para preparar sentencias (Sirve para agregarle valores a los inserts, gets, etc..)
     public PreparedStatement prepararSentencia(String consulta) throws SQLException {
         return Conexion.prepareStatement(consulta);
     }
+
+    public BaseDeDatos getBDD() {
+        return BDD;
+    }
+
+    public void setBDD(BaseDeDatos bDD) {
+        BDD = bDD;
+    }
+
+    public Statement getSentencia() {
+        return Sentencia;
+    }
+
+    public void setSentencia(Statement sentencia) {
+        Sentencia = sentencia;
+    }
+
+    public Connection getConexion() {
+        return Conexion;
+    }
+
+    public void setConexion(Connection conexion) {
+        Conexion = conexion;
+    }
+
+    
 }

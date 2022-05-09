@@ -1,6 +1,8 @@
 package modelo;
 
 import controlador.Controlador;
+import controlador.ControladorHorario;
+import controlador.TransactionMySQL;
 import vista.VentanaCalendario;
 import vista.VentanaPrincipal;
 
@@ -12,20 +14,30 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        /*
-        System.out.println("Hola Mundo");
-        Controlador Control = new Controlador();
-        Salon s1 = new Salon("IA108", 40, "SC");
-        System.out.println(Control.InsertarSalon(s1));
-        ArrayList <Salon> Lista = Control.ObtenerSalones();
-        System.out.println (Lista.size());
-        System.out.println (Lista);
-        Salon s2 = Control.BuscarSalonID("IA106");
-        System.out.println (s2);
-        ArrayList <Salon> Lista2 = Control.BuscarSalonesCapacidad(50);
-        System.out.println (Lista2);
-        */
+
         new VentanaPrincipal(); 
         //new VentanaCalendario();
+
+        /*try {
+            TransactionMySQL transaccion = new TransactionMySQL();
+
+            transaccion.ejecutarSentenciaentransaccion("insert into Salones values ('IA114', 50, 'C');");
+            transaccion.ejecutarSentenciaentransaccion("insert into Salones values ('IA113', 22, 'SC');");
+
+            transaccion.FinalizarTransaccion();
+        } catch (Exception e) {
+            
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    */
+    /*ControladorHorario Controlador = new ControladorHorario();
+    ArrayList<Horario> Lista = Controlador.ObtenerHorarios();
+    for (int index = 0; index < Lista.size(); index++) {
+        System.out.println(Lista.get(index));
     } 
+    System.out.println(Controlador.ObtenerHorarios());
+    */
+
+} 
 }
