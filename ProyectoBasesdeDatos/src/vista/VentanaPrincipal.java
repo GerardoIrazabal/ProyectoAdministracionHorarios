@@ -7,6 +7,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import controlador.Controlador;
+
 public class VentanaPrincipal implements ActionListener {
 
     /*---------------------------------------------------------------------
@@ -37,12 +39,15 @@ public class VentanaPrincipal implements ActionListener {
     private JMenuItem ms1;
     private JMenuItem ms2;
     private JMenuItem ms3;
+    private JMenuItem ms4;
     private JMenuItem mj1;
     private JMenuItem mj2;
     private JMenuItem mr1;
     private JMenuItem mp1;
     private JMenuItem mr2;
     private JMenuItem mh1;
+    private JMenuItem mh2;
+    private JMenuItem mh3;
 
     /*---------------------------------------------------------------------
      * definición de la consola
@@ -92,14 +97,17 @@ public class VentanaPrincipal implements ActionListener {
         ms0 = new JMenuItem("Crear Salon");
         ms1 = new JMenuItem("Lista de Salones");
         ms2 = new JMenuItem("Buscar Salon");
+        ms4 = new JMenuItem("Salones disponibles");
         ms3 = new JMenuItem("Salir");
         ms0.addActionListener(this);
         ms1.addActionListener(this);
         ms2.addActionListener(this);
         ms3.addActionListener(this);
+        ms4.addActionListener(this);
         m1.add(ms0);
         m1.add(ms1);
         m1.add(ms2);
+        m1.add(ms4);
         m1.addSeparator();
         m1.add(ms3);
 
@@ -129,6 +137,14 @@ public class VentanaPrincipal implements ActionListener {
         mh1 = new JMenuItem("Crear Horario");
         mh1.addActionListener(this);
         m5.add(mh1);
+
+        mh2 = new JMenuItem("Buscar Horario");
+        mh2.addActionListener(this);
+        m5.add(mh2);
+
+        mh3 = new JMenuItem("Suprimir horario del curso");
+        mh3.addActionListener(this);
+        m5.add(mh3);
 
         // frame principal
         f.addWindowListener(new CloseHandler());
@@ -174,6 +190,21 @@ public class VentanaPrincipal implements ActionListener {
         } else if (e.getActionCommand().equals("Crear Horario")) {
             f.dispose(); // Eliminamos ventana actual
             new VentanaRegistroHorario().setVisible();// Cargamos la nueva con la lista)
+        }else if (e.getActionCommand().equals("Buscar Horario")) {
+            f.dispose(); // Eliminamos ventana actual
+            new VentanaBuscarHorario().setVisible();// Cargamos la nueva con la lista)
+        }else if (e.getActionCommand().equals("Salones disponibles")) {
+            String Fecha = JOptionPane.showInputDialog(f,"Ingrese una fecha");
+            java.sql.Date FechaDeBusqueda = java.sql.Date.valueOf(Fecha);
+            //java.sql.Date FechaDeBusqueda = new java.sql.Date (new java.util.Date().getTime());
+            new VentanaSalones(new Controlador().ObtenerSalonesLibres(FechaDeBusqueda)).setVisible();// Cargamos la nueva con la lista)
+            f.dispose(); // Eliminamos ventana actual
+        }else if (e.getActionCommand().equals("Suprimir horario del curso")) {
+            f.dispose(); // Eliminamos ventana actual
+            new VentanaSuprimirHorario().setVisible();// Cargamos la nueva con la lista)
+        }else if (e.getActionCommand().equals("Historial de Cambios")) {
+            f.dispose(); // Eliminamos ventana actual
+            new VentanaSuprimirHorario().setVisible();// Cargamos la nueva con la lista)
         }
 
     }

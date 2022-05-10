@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import javax.lang.model.util.ElementScanner14;
 import javax.swing.*;
 
 import controlador.Controlador;
@@ -99,13 +100,26 @@ public class VentanaRegistroCurso {
 
     private class CrearHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Curso s1 = new Curso(t1.getText(), Integer.parseInt(t2.getText()), t3.getText(), t4.getText());
-            ControladorCurso Control = new ControladorCurso();
-            System.out.println(Control.InsertarCurso(s1));
-            VentanaPrincipal ventana = new VentanaPrincipal();
-            // ventana.f();
-            f.dispose();
+            if (t1.getText().equals("")){
 
+                JOptionPane.showMessageDialog(f, "El campo de busqueda clave no puede estar vacio");   
+            } else if (t2.getText().equals("")){
+                JOptionPane.showMessageDialog(f, "El campo de busqueda seccion no puede estar vacio"); 
+
+            } else if (t3.getText().equals("")){
+                JOptionPane.showMessageDialog(f, "El campo de busqueda titulo no puede estar vacio");
+
+            } else if (t4.getText().equals("")){
+                JOptionPane.showMessageDialog(f, "El campo de busqueda profesor no puede estar vacio"); 
+            }else {
+                Curso s1 = new Curso(t1.getText(), Integer.parseInt(t2.getText()), t3.getText(), t4.getText());
+                ControladorCurso Control = new ControladorCurso();
+                System.out.println(Control.InsertarCurso(s1));
+                VentanaPrincipal ventana = new VentanaPrincipal();
+                // ventana.f();
+                f.dispose();
+
+            }
             // System.out.println("ERROR: el equipo no existe!");
 
         }

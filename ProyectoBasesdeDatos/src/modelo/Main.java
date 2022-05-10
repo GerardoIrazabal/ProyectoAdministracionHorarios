@@ -15,7 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new VentanaPrincipal(); 
+        new VentanaPrincipal();
+         
         //new VentanaCalendario();
 
         /*try {

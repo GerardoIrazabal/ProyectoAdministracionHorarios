@@ -91,14 +91,22 @@ public class VentanaRegistroSalon {
 
     private class CrearHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+
+            if (t1.getText().equals("")){
+                JOptionPane.showMessageDialog(f, "El campo de busqueda IDSALON no puede estar vacio");  
+                
+            }else if (t2.getText().equals("")){
+                    JOptionPane.showMessageDialog(f, "El campo de busqueda capacidad no puede estar vacio");
+                    
+                    }else {
+
             Salon s1 = new Salon(t1.getText(), Integer.parseInt(t2.getText()), t3.getSelectedItem().toString());
             Controlador Control = new Controlador();
             JOptionPane.showMessageDialog(f, Control.InsertarSalon(s1));
             VentanaSalones ventana = new VentanaSalones();
              ventana.setVisible();
             f.dispose();
-
-            // System.out.println("ERROR: el equipo no existe!");
+                    }
 
         }
     }

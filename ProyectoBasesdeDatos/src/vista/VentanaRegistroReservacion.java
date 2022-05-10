@@ -11,8 +11,10 @@ import javax.swing.*;
 
 import controlador.Controlador;
 import controlador.ControladorCurso;
+import controlador.ControladorHorario;
 import controlador.ControladorReservacion;
 import modelo.Curso;
+import modelo.Horario;
 import modelo.Reservacion;
 import modelo.Salon;
 
@@ -29,11 +31,13 @@ public class VentanaRegistroReservacion {
     private JLabel l2;
     private JLabel l3;
     private JLabel l4;
+    private JLabel l5;
 
     private JComboBox t1;
     private JTextField t2;
     private JTextField t3;
     private JTextField t4;
+    private JComboBox t5;
 
     private JButton b1;
     private JButton b2;
@@ -52,24 +56,35 @@ public class VentanaRegistroReservacion {
         l2 = new JLabel("Nombre: ");
         l3 = new JLabel("FechaHora: ");
         l4 = new JLabel("Duracion: ");
+        l5 = new JLabel("Horario");
         Controlador control = new Controlador();
-        ArrayList <Salon> Lista = control.BuscarSalonesIDReservacion();
+        ArrayList<Salon> Lista = control.BuscarSalonesIDReservacion();
 
-        String listadeSalonesA [] = new String [Lista.size()];
+        String listadeSalonesA[] = new String[Lista.size()];
         for (int i = 0; i < Lista.size(); i++)
-        
+
         {
             Salon s1 = Lista.get(i);
-            listadeSalonesA [i] = s1.getIDSALON();
+            listadeSalonesA[i] = s1.getIDSALON();
         }
 
-        //String listadeSalonesA [] = {"IA101" , "IA102" , "IA103"};
+        // String listadeSalonesA [] = {"IA101" , "IA102" , "IA103"};
+        ControladorHorario controlhorario = new ControladorHorario();
+        ArrayList<Horario> ListaHorario = controlhorario.ObtenerHorarios();
 
+        String listadeHorario[] = new String[Lista.size()];
+        for (int i = 0; i < ListaHorario.size(); i++)
+
+        {
+            Horario s1 = ListaHorario.get(i);
+            listadeHorario[i] = s1.getCursito().toString() + "-" + s1.getDIASEM() + "-" + s1.getHora();
+        }
 
         t1 = new JComboBox(listadeSalonesA);
         t2 = new JTextField(20);
         t3 = new JTextField(20);
         t4 = new JTextField(20);
+        t5 = new JComboBox(listadeHorario);
 
         p.add(l1);
         p.add(t1);
@@ -79,6 +94,8 @@ public class VentanaRegistroReservacion {
         p.add(t3);
         p.add(l4);
         p.add(t4);
+        p.add(l5);
+        p.add(t5);
 
         // botones de creación/cancelación
         b1 = new JButton("Crear");
@@ -102,11 +119,10 @@ public class VentanaRegistroReservacion {
 
     public void setVisible() {
 
-        //t1.setText("");
+        // t1.setText("");
         t2.setText("");
         t3.setText("");
         t4.setText("");
-
 
         f.setVisible(true);
     }
@@ -117,18 +133,53 @@ public class VentanaRegistroReservacion {
 
     private class CrearHandler implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-            Date Fecha = Date.valueOf(t3.getText());
-            Reservacion s1 = new Reservacion(t1.getSelectedItem().toString(), t2.getText(), Fecha , Integer.parseInt(t4.getText()));
-            ControladorReservacion Control = new ControladorReservacion();
-            System.out.println(Control.InsertarReservacion(s1));
-            VentanaPrincipal ventana = new VentanaPrincipal();
-            // ventana.f();
-            f.dispose();
 
-            // System.out.println("ERROR: el equipo no existe!");
+            if (t2.getText().equals("")) {
+                JOptionPane.showMessageDialog(f, "El campo de busqueda Nombre no puede estar vacio");
+
+            } else if (t3.getText().equals("")) {
+                JOptionPane.showMessageDialog(f, "El campo de busqueda FechaHora no puede estar vacio");
+
+            } else if (t4.getText().equals("")) {
+                JOptionPane.showMessageDialog(f, "El campo de busqueda Duracion no puede estar vacio");
+            } else {
+                DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+                Date Fecha = Date.valueOf(t3.getText());
+                Reservacion s1 = new Reservacion(t1.getSelectedItem().toString(), t2.getText(), Fecha,
+                        Integer.parseInt(t4.getText()));
+
+                String ClaveYSeccion = t5.getSelectedItem().toString();
+                Integer Seccion = 0;
+                String Clave = "";
+                Integer Diasem = 0;
+                Integer Hora = 0;
+                String ListaClave[] = ClaveYSeccion.split("-");
+                if (ListaClave.length == 5) {
+                    Clave = ListaClave[0] + "-" + ListaClave[1];
+                    Seccion = Integer.parseInt(ListaClave[2]);
+                    Diasem = Integer.parseInt(ListaClave[3]);
+                    Hora = Integer.parseInt(ListaClave[4]);
+                } else if (ListaClave.length == 4) {
+                    Clave = ListaClave[0];
+                    Seccion = Integer.parseInt(ListaClave[1]);
+                    Diasem = Integer.parseInt(ListaClave[2]);
+                    Hora = Integer.parseInt(ListaClave[3]);
+
+                } else {
+                    JOptionPane.showMessageDialog(f, "Se ha generado un error al seleccionar la clave");
+                }
+                ControladorReservacion Control = new ControladorReservacion();
+                JOptionPane.showMessageDialog(f,Control.InsertarReservacion(s1, Clave, Seccion, Diasem, Hora));
+                VentanaPrincipal ventana = new VentanaPrincipal();
+                // ventana.f();
+                f.dispose();
+
+            }
 
         }
+
+        // System.out.println("ERROR: el equipo no existe!");
+
     }
 
     private class CancelarHandler implements ActionListener {

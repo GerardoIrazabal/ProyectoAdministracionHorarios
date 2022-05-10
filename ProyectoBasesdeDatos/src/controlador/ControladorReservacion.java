@@ -34,9 +34,9 @@ public class ControladorReservacion extends Controlador {
     }
 
      //metodo para insertar salones
-    public String InsertarReservacion(Reservacion s1) {
+    public String InsertarReservacion(Reservacion s1, String Clave, Integer Seccion, Integer Diasem, Integer Hora) {
         String mensaje = "Aun no se ha creado la reservacion";
-        String query = "call CrearReservacion (?, ?, ?, ?)";
+        String query = "call CrearReservacion (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             this.getControlador().CrearConexion();
             PreparedStatement Preparandoquery = this.getControlador().prepararSentencia(query);
@@ -44,6 +44,10 @@ public class ControladorReservacion extends Controlador {
             Preparandoquery.setString(2, s1.getNombre());
             Preparandoquery.setDate(3, s1.getFechaHora());
             Preparandoquery.setInt(4, s1.getDuracion());
+            Preparandoquery.setString(5, Clave);
+            Preparandoquery.setInt(6, Seccion);
+            Preparandoquery.setInt(7, Diasem);
+            Preparandoquery.setInt(8, Hora);
             Preparandoquery.executeUpdate();
             Preparandoquery.close();
             this.getControlador().CerrarConexion();

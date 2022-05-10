@@ -15,7 +15,7 @@ import modelo.Horario;
 import modelo.Periodo;
 import modelo.Salon;
 
-public class VentanaRegistroHorario {
+public class VentanaActualizarHorario {
 
     /*---------------------------------------------------------------------
      * componentes de la ventana
@@ -49,7 +49,7 @@ public class VentanaRegistroHorario {
      * constructor
      *--------------------------------------------------------------------*/
 
-    public VentanaRegistroHorario() {
+    public VentanaActualizarHorario(Horario h1) {
         // campos de información
         f = new JFrame("Datos del Horario");
         p = new JPanel();
@@ -58,34 +58,66 @@ public class VentanaRegistroHorario {
         ControladorCurso control = new ControladorCurso();
         ArrayList<Curso> Lista = control.obtenerNombresCursos();
 
-        String listadeCurso[] = new String[Lista.size()];
-        for (int i = 0; i < Lista.size(); i++)
+        String listadeCurso[] = new String[1];
+        listadeCurso[0] = h1.getCursito().toString();
 
-        {
-            Curso s1 = Lista.get(i);
-            listadeCurso[i] = s1.toString();
-        }
         ArrayList<Salon> ListadeSalones = control.BuscarSalonesIDReservacion();
 
-        String listadeSalonesA[] = new String[ListadeSalones.size()];
-        for (int i = 0; i < ListadeSalones.size(); i++)
+        String listadeSalonesA[] = new String[ListadeSalones.size()+1];
+        listadeSalonesA[0] = h1.getIDSALON();
+        for (int i = 1; i <= ListadeSalones.size(); i++)
 
         {
-            Salon s1 = ListadeSalones.get(i);
+            Salon s1 = ListadeSalones.get(i-1);
             listadeSalonesA[i] = s1.getIDSALON();
         }
 
-        String listadeDias[] = { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
+        String listadeDias[] = { "","Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" };
+        String DIA = "";
+
+        switch (h1.getDIASEM()) {
+            case 1:
+                DIA = "Lunes";
+                break;
+
+            case 2:
+                DIA = "Martes";
+                break;
+
+            case 3:
+                DIA = "Miercoles";
+                break;
+
+            case 4:
+                DIA = "Jueves";
+                break;
+
+            case 5:
+                DIA = "Viernes";
+                break;
+
+            case 6:
+                DIA = "Sabado";
+                break;
+
+            default:
+                DIA = "";
+                break;
+        }
+        listadeDias[0] = DIA;
+
 
         Date FechaActual = new Date();
 
         ArrayList<Periodo> ListaPeriodos = control.ObtenerYCrearPeriodos(FechaActual);
-        String ListaDePeriodos[] = new String[ListaPeriodos.size()];
+        String ListaDePeriodos[] = new String[ListaPeriodos.size()+1];
+        ListaDePeriodos[0] = h1.getPeriodo();
 
-        for (int i = 0; i < ListaPeriodos.size(); i++)
+
+        for (int i = 1; i <= ListaPeriodos.size(); i++)
 
         {
-            Periodo s1 = ListaPeriodos.get(i);
+            Periodo s1 = ListaPeriodos.get(i-1);
             ListaDePeriodos[i] = s1.getTitulo();
         }
 
@@ -101,10 +133,14 @@ public class VentanaRegistroHorario {
         t1 = new JComboBox(listadeCurso);
         t2 = new JComboBox(listadeDias);
         t3 = new JTextField(20);
+        t3.setText(h1.getHora()+ "");
         t4 = new JTextField(20);
+        t4.setText(h1.getMinuto()+ "");
         t5 = new JTextField(20);
+        t5.setText(h1.getDuracion()+ "");
         t6 = new JComboBox(ListaDePeriodos);
         t7 = new JTextField(20);
+        t7.setText(h1.getSemestre()+ "");
         t8 = new JComboBox(listadeSalonesA);
 
         p.add(l1);
@@ -125,7 +161,7 @@ public class VentanaRegistroHorario {
         p.add(t8);
 
         // botones de creación/cancelación
-        b1 = new JButton("Crear");
+        b1 = new JButton("Actualizar");
         b1.addActionListener(new CrearHandler());
         p.add(b1);
 
@@ -145,9 +181,6 @@ public class VentanaRegistroHorario {
      *--------------------------------------------------------------------*/
 
     public void setVisible() {
-
-        t3.setText("");
-        t4.setText("");
 
         f.setVisible(true);
     }
@@ -219,7 +252,7 @@ public class VentanaRegistroHorario {
             h1.setIDSALON(t8.getSelectedItem().toString());
 
             ControladorHorario Control = new ControladorHorario();
-            JOptionPane.showMessageDialog(f, Control.InsertarHorario(h1));
+            JOptionPane.showMessageDialog(f, Control.actualizarHorario(h1));
             VentanaPrincipal ventana = new VentanaPrincipal();
             // ventana.f();
             f.dispose();
